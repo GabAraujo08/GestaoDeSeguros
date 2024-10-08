@@ -10,9 +10,9 @@ import org.example.entities.veiculo.carro.FactoryCarro;
 public class Main {
     public static void main(String[] args) {
         Veiculo carro = new FactoryCarro().createVeiculo();
-        System.out.println(carro.getTipo());
 
-        Cliente cliente = new FactoryCliente().createCliente();
-        cliente.metodoCliente();
+
+        Cliente cliente = new FactoryCliente().createCliente("João", "12345678910", "12345678", "SP", "São Paulo", "123", "Rua X", "12345678");
+
     }
 }
