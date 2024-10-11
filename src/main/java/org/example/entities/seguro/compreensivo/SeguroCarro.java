@@ -10,16 +10,8 @@ import java.time.LocalDate;
 public class SeguroCarro extends Seguro {
 
 
-
-    public SeguroCarro(String numeroApolice,
-                       double valorSeguro,
-                       double premio,
-                       String seguradora,
-                       LocalDate dataInicioVigencia,
-                       LocalDate dataFimVigencia,
-                       Cliente cliente,
-                       Veiculo veiculo) {
-        super(numeroApolice, valorSeguro, premio, seguradora, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
+    public SeguroCarro(double valorParcelaSeguro, String numeroApolice, double premio, LocalDate dataInicioVigencia, Cliente cliente, LocalDate dataFimVigencia, Veiculo veiculo) {
+        super(valorParcelaSeguro, numeroApolice, premio, dataInicioVigencia, cliente, dataFimVigencia, veiculo);
     }
 
     @Override
