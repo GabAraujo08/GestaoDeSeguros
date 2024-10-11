@@ -8,6 +8,10 @@ import java.time.LocalDate;
 public abstract interface Seguro {
 
 
+<<<<<<< Updated upstream
+=======
+    public abstract double calcularPremio(Veiculo veiculo);
+>>>>>>> Stashed changes
 
     double calcularPremio();
 
