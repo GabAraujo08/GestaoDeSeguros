@@ -3,17 +3,12 @@ package org.example.entities.veiculo.caminhao;
 import org.example.entities.veiculo.Veiculo;
 
 public class Caminhao implements Veiculo {
-<<<<<<< Updated upstream
-
-
-
-=======
     private String placa;
     private String marca;
     private String modelo;
     private int ano;
     private float valorMercado;
->>>>>>> Stashed changes
+
     @Override
     public String getTipo() {
         return "Caminhao";
