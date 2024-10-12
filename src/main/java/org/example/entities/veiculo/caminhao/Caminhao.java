@@ -8,6 +8,15 @@ public class Caminhao implements Veiculo {
     private String modelo;
     private int ano;
     private float valorMercado;
+    private double capacidadeCarga;
+
+    public double getCapacidadeCarga() {
+        return capacidadeCarga;
+    }
+
+    public void setCapacidadeCarga(double capacidadeCarga) {
+        this.capacidadeCarga = capacidadeCarga;
+    }
 
     @Override
     public String getTipo() {
