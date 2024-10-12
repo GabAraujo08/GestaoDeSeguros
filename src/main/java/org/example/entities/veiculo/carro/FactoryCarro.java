@@ -5,7 +5,7 @@ import org.example.entities.veiculo.Veiculo;
 
 public class FactoryCarro extends Factory {
     @Override
-    public Veiculo createVeiculo() {
-        return new Carro();
+    public Veiculo createVeiculo(String placa, String marca, String modelo, int ano, float valorMercado) {
+        return new Carro(placa ,marca, modelo, ano, valorMercado);
     }
 }
