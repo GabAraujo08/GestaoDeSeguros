@@ -18,14 +18,15 @@ public abstract class Seguro {
     private boolean status;
 
 
-    public Seguro(double valorParcelaSeguro, String numeroApolice, double premio, LocalDate dataInicioVigencia, Cliente cliente, LocalDate dataFimVigencia, Veiculo veiculo) {
+    public Seguro(double valorParcelaSeguro, String numeroApolice, LocalDate dataInicioVigencia, Cliente cliente, LocalDate dataFimVigencia, Veiculo veiculo) {
         this.valorParcelaSeguro = valorParcelaSeguro;
         this.numeroApolice = numeroApolice;
-        this.premio = premio;
+        this.premio = calcularPremio(veiculo);
         this.dataInicioVigencia = dataInicioVigencia;
         this.cliente = cliente;
         this.dataFimVigencia = dataFimVigencia;
         this.veiculo = veiculo;
+        this.status = true;
     }
 
     public double getvalorParcelaSeguro() {

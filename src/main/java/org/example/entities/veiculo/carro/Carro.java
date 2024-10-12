@@ -2,7 +2,7 @@ package org.example.entities.veiculo.carro;
 
 import org.example.entities.veiculo.Veiculo;
 
-class Carro implements Veiculo {
+public final class Carro implements Veiculo {
     private String placa;
     private String marca;
     private String modelo;
