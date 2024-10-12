@@ -8,7 +8,15 @@ public class Moto implements Veiculo {
     private String modelo;
     private int ano;
     private float valorMercado;
-    private int cilindradas;
+    private int cilindrada;
+
+    public int getCilindrada() {
+        return cilindrada;
+    }
+
+    public void setCilindrada(int cilindradas) {
+        this.cilindrada = cilindradas;
+    }
 
     @Override
     public String getTipo() {
