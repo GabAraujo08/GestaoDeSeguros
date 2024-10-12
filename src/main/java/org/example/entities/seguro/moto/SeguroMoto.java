@@ -26,7 +26,6 @@ public class SeguroMoto extends Seguro {
             fatorCilindrada = 1.1;
         }
 
-        double premioFinal = premioBase * fatorCilindrada;
-        return premioFinal;
+        return premioBase * fatorCilindrada;
     }
 };
