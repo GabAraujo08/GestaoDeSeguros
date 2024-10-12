@@ -11,8 +11,9 @@ public class Main {
     public static void main(String[] args) {
         Carro carro = new Carro("ABC-1234", "Chevrolet", "Onix", 2021, 60000);
         Cliente cliente = new Cliente("João", "123.456.789-00", "08451-110", "SP", "São Paulo", "50", "Rua dos bobos", "12345678");
-
-        SeguroCarro seguroCarro = new SeguroCarro(500, "3724924", LocalDate.now(), cliente, LocalDate.now().plusMonths(9), carro);
+        //SeguroCarro seguroCarro = new SeguroCarro(500, "3724924", LocalDate.now(), cliente, LocalDate.now().plusMonths(3), carro);
+        SeguroCarro seguroCarro = new SeguroCarro(500, "3724924", LocalDate.of(2023, 9, 10), cliente, LocalDate.of(2023, 9, 10).plusMonths(3), carro);
+        System.out.println(seguroCarro.verificarValidade());
         System.out.println("Valor do prêmio do seguro do carro: " + seguroCarro.getPremio());
         System.out.println(seguroCarro.emitirApolice());
 

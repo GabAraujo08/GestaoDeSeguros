@@ -26,7 +26,7 @@ public abstract class Seguro {
         this.cliente = cliente;
         this.dataFimVigencia = dataFimVigencia;
         this.veiculo = veiculo;
-        this.status = true;
+        atualizarStatus();
     }
 
     public double getvalorParcelaSeguro() {
@@ -115,7 +115,9 @@ public abstract class Seguro {
     }
 
     public void atualizarStatus() {
-        if (!verificarValidade()) {
+        if (verificarValidade()) {
+            this.status = true;
+        }else{
             this.status = false;
         }
     }
