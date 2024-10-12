@@ -1,9 +1,8 @@
-package org.example.entities.seguro.compreensivo;
+package org.example.entities.seguro.carro;
 
 import org.example.entities.cliente.Cliente;
 import org.example.entities.seguro.Seguro;
 import org.example.entities.veiculo.Veiculo;
-import org.example.entities.veiculo.carro.FactoryCarro;
 
 import java.time.LocalDate;
 

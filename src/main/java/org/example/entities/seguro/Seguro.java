@@ -4,6 +4,8 @@ import org.example.entities.cliente.Cliente;
 import org.example.entities.veiculo.Veiculo;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Seguro {
     private String numeroApolice;
@@ -13,6 +15,7 @@ public abstract class Seguro {
     private LocalDate dataFimVigencia;
     private Cliente cliente;
     private Veiculo veiculo;
+    private boolean status;
 
 
     public Seguro(double valorParcelaSeguro, String numeroApolice, double premio, LocalDate dataInicioVigencia, Cliente cliente, LocalDate dataFimVigencia, Veiculo veiculo) {
@@ -81,17 +84,48 @@ public abstract class Seguro {
         this.veiculo = veiculo;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public double getValorParcelaSeguro() {
+        return valorParcelaSeguro;
+    }
+
+    public void setValorParcelaSeguro(double valorParcelaSeguro) {
+        this.valorParcelaSeguro = valorParcelaSeguro;
+    }
+
     public abstract double calcularPremio(Veiculo veiculo);
 
 
-    void renovar(LocalDate novaDataFimVigencia){
-
+    void renovar(LocalDate novaDataFimVigencia) {
+        this.dataFimVigencia = novaDataFimVigencia;
     }
 
-    public void cancelar();
+    public boolean verificarValidade() {
+        LocalDate hoje = LocalDate.now();
+        return (hoje.isAfter(dataInicioVigencia) || hoje.isEqual(dataInicioVigencia)) &&
+                (hoje.isBefore(dataFimVigencia) || hoje.isEqual(dataFimVigencia));
+    }
 
-    public boolean verificarValidade();
+    public Map<String, Object> emitirApolice() {
+        Map<String, Object> apoliceDetalhes = new HashMap<>();
+        apoliceDetalhes.put("numeroApolice", numeroApolice);
+        apoliceDetalhes.put("clienteNome", cliente.getNome());
+        apoliceDetalhes.put("veiculoModelo", veiculo.getModelo());
+        apoliceDetalhes.put("dataInicioVigencia", dataInicioVigencia);
+        apoliceDetalhes.put("dataFimVigencia", dataFimVigencia);
+        apoliceDetalhes.put("premio", premio);
+        apoliceDetalhes.put("valorParcelaSeguro", valorParcelaSeguro);
+        apoliceDetalhes.put("status", status ? "Ativo" : "Inativo");
+        return apoliceDetalhes;
+    }
 
-    public String emitirApolice();
+
 }
 
