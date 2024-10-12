@@ -10,6 +10,14 @@ public class Caminhao implements Veiculo {
     private float valorMercado;
     private double capacidadeCarga;
 
+    public Caminhao(String placa, String marca, String modelo, int ano, float valorMercado) {
+        this.placa = placa;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.ano = ano;
+        this.valorMercado = valorMercado;
+    }
+
     public double getCapacidadeCarga() {
         return capacidadeCarga;
     }
