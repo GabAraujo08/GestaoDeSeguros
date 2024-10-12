@@ -10,6 +10,14 @@ public class Moto implements Veiculo {
     private float valorMercado;
     private int cilindrada;
 
+    public Moto(String placa, String marca, String modelo, int ano, float valorMercado) {
+        this.placa = placa;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.ano = ano;
+        this.valorMercado = valorMercado;
+    }
+
     public int getCilindrada() {
         return cilindrada;
     }
