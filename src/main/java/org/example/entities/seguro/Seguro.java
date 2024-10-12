@@ -114,6 +114,12 @@ public abstract class Seguro {
                 (hoje.isBefore(dataFimVigencia) || hoje.isEqual(dataFimVigencia));
     }
 
+    public void atualizarStatus() {
+        if (!verificarValidade()) {
+            this.status = false;
+        }
+    }
+
     public Map<String, Object> emitirApolice() {
         Map<String, Object> apoliceDetalhes = new HashMap<>();
         apoliceDetalhes.put("numeroApolice", numeroApolice);
