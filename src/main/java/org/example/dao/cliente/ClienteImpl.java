@@ -39,7 +39,6 @@ public class ClienteImpl implements ClienteDao{
 
     @Override
     public List<Cliente> readAll() {
-
             List<Cliente> result = new ArrayList<>();
             String sql = "SELECT * FROM CLIENTE";
             try {
@@ -47,37 +46,21 @@ public class ClienteImpl implements ClienteDao{
                 Statement stmt = connection.prepareStatement(sql);
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
-                    String cpf = rs.getString("cpf").trim(); // Remove espaços no início e no final
-                    cpf = Validadores.removeCaracteresEspeciais(cpf); // Remove caracteres especiais
-                    String nome = rs.getString("nm_usuario");
-                    String email = rs.getString("email");
-                    String senha = rs.getString("senha_login");
-                    Date dataNascimento = rs.getDate("dt_nasc");
-                    String numeroUsuario = rs.getString("nr_usuario");
-                    String endereco = rs.getString("endereco_usuario");
-                    Usuario usuario = new Usuario(nome, email, senha, cpf);
-                /*
-                 Essa parte do código é responsável por verificar se os campos
-                 estão nulos, e caso não estejam, setar os valores no objeto,
-                 isso evita que caso os campos estejam nulos, a aplicação tente
-                 setar um valor nulo no objeto, o que geraria um erro.
-                 */
-                    if (dataNascimento != null) {
-                        usuario.setDataNascimento(dataNascimento.toString());
-                    }
-                    if (numeroUsuario != null) {
-                        usuario.setTelefone(numeroUsuario);
-                    }
-                    if (endereco != null) {
-                        usuario.alterarEndereco(endereco);
-                    }
-                    result.add(usuario);
-
+                    String nome = rs.getString("nome");
+                    String cpf = rs.getString("cpf");
+                    String cep = rs.getString("cep");
+                    String estado = rs.getString("estado");
+                    String cidade = rs.getString("cidade");
+                    String logradouro = rs.getString("logradouro");
+                    String numLogradouro = rs.getString("numLogradouro");
+                    String telefone = rs.getString("telefone");
+                    Cliente cliente = new Cliente(nome, cpf, cep, estado, cidade, logradouro, numLogradouro, telefone);
+                    result.add(cliente);
                 }
                 connection.close();
             }catch(SQLException e){
                 //e.printStackTrace();
-                throw new UsuarioDaoException("Erro ao ler usuários.");
+                throw new ClienteDaoException("Erro ao ler usuários.");
             }
             return result;
         }
@@ -85,11 +68,43 @@ public class ClienteImpl implements ClienteDao{
 
     @Override
     public void update(Cliente cliente) {
+        String sql = "UPDATE CLIENTE SET nome = ?, cep = ?, estado = ?, cidade = ?, logradouro = ?, numLogradouro = ?, telefone = ? WHERE cpf = ?";
+        try{
+            Connection connection = db.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, cliente.getNome());
+            pstmt.setString(2, cliente.getCpf());
+            pstmt.setString(3, cliente.getCep());
+            pstmt.setString(4, cliente.getEstado());
+            pstmt.setString(5, cliente.getCidade());
+            pstmt.setString(6, cliente.getLogradouro());
+            pstmt.setString(7, cliente.getNumLogradouro());
+            pstmt.setString(8, cliente.getTelefone());
 
+            int linhasAlteradas = pstmt.executeUpdate();
+            // Verifica se o CPF foi encontrado e deletado
+            if (linhasAlteradas == 0) {
+                throw new ClienteDaoException("Usuário não existe no banco.");
+            }
+            connection.close();
+        }catch(SQLException e) {
+            throw new ClienteDaoException("Erro ao atualizar usuário.");
+        }
     }
 
     @Override
     public void delete(String cpf) {
-
+        String sql = "DELETE FROM CLIENTE WHERE cpf = ?";
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            int linhasAlteradas = pstmt.executeUpdate();
+            if (linhasAlteradas == 0) {
+                throw new ClienteDaoException("CPF não encontrado no banco de dados.");
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new ClienteDaoException("Erro ao deletar usuário.");
+        }
     }
 }
