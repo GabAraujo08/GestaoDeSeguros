@@ -9,7 +9,6 @@ public final class Carro implements Veiculo {
     private int ano;
     private float valorMercado;
 
-
     public Carro(String placa, String marca, String modelo, int ano, float valorMercado) {
         this.placa = placa;
         this.marca = marca;
@@ -18,9 +17,6 @@ public final class Carro implements Veiculo {
         this.valorMercado = valorMercado;
 
     }
-
-
-
 
     @Override
     public String getTipo() {

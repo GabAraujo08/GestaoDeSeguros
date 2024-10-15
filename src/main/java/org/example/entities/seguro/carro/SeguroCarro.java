@@ -13,11 +13,15 @@ public class SeguroCarro extends Seguro {
         super(valorParcelaSeguro, numeroApolice, dataInicioVigencia, cliente, dataFimVigencia, veiculo);
     }
 
+    /**
+     * Calcula o prêmio do seguro do carro associado ao seguro.
+     * @return o valor do prêmio
+     */
     @Override
-    public double calcularPremio(Veiculo veiculo) {
-        double premioBase = veiculo.getValorMercado() * 0.02;
+    public double calcularPremio() {
+        double premioBase = getVeiculo().getValorMercado() * 0.02;
         int anoAtual = java.time.Year.now().getValue();
-        int idadeVeiculo = anoAtual - veiculo.getAno();
+        int idadeVeiculo = anoAtual - getVeiculo().getAno();
         double fatorAno = 1.0;
         if (idadeVeiculo > 10) {
             fatorAno = 0.8;

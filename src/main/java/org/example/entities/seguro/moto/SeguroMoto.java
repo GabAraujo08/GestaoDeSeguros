@@ -13,10 +13,14 @@ public class SeguroMoto extends Seguro {
         super(valorParcelaSeguro, numeroApolice, dataInicioVigencia, cliente, dataFimVigencia, veiculo);
     }
 
+    /**
+     * Calcula o prêmio do seguro da moto associado ao seguro.
+     * @return o valor do prêmio
+     */
     @Override
-    public double calcularPremio(Veiculo veiculo) {
-        Moto moto = (Moto) veiculo;
-        double premioBase = veiculo.getValorMercado() * 0.015;
+    public double calcularPremio() {
+        Moto moto = (Moto) getVeiculo();
+        double premioBase = getVeiculo().getValorMercado() * 0.015;
         int cilindrada = moto.getCilindrada();
         double fatorCilindrada = 1.0;
 

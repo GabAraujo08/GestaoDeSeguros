@@ -1,8 +1,9 @@
 package org.example.entities.veiculo.caminhao;
 
 import org.example.entities.veiculo.Veiculo;
+import org.example.entities.veiculo.VeiculoDeCarga;
 
-public class Caminhao implements Veiculo {
+public class Caminhao implements VeiculoDeCarga {
     private String placa;
     private String marca;
     private String modelo;
@@ -18,9 +19,7 @@ public class Caminhao implements Veiculo {
         this.valorMercado = valorMercado;
     }
 
-    public double getCapacidadeCarga() {
-        return capacidadeCarga;
-    }
+
 
     public void setCapacidadeCarga(double capacidadeCarga) {
         this.capacidadeCarga = capacidadeCarga;
@@ -74,5 +73,10 @@ public class Caminhao implements Veiculo {
 
     public void setValorMercado(float valorMercado) {
         this.valorMercado = valorMercado;
+    }
+
+    @Override
+    public double getCapacidadeCarga() {
+        return capacidadeCarga;
     }
 }

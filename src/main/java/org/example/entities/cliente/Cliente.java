@@ -1,7 +1,9 @@
 package org.example.entities.cliente;
 
 import org.example.entities.seguro.Seguro;
+import org.example.entities.utility.ValidadorCpf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
@@ -15,17 +17,89 @@ public class Cliente {
     private String telefone;
     private List<Seguro> seguros;
 
-
     public Cliente(String nome, String cpf, String cep, String estado, String cidade, String numLogradouro, String logradouro, String telefone) {
         this.nome = nome;
-        this.cpf = cpf;
+        setCpf(cpf); // Validação de CPF ao inicializar
         this.cep = cep;
         this.estado = estado;
         this.cidade = cidade;
         this.numLogradouro = numLogradouro;
         this.logradouro = logradouro;
-        this.telefone = telefone;
+        setTelefone(telefone); // Validação de telefone
+        this.seguros = new ArrayList<>();
     }
+
+
+    /**
+     * Adiciona um seguro à lista de seguros do cliente.
+     * @param seguro o seguro a ser adicionado
+     */
+    public void adicionarSeguro(Seguro seguro) {
+        if (seguro != null && !seguros.contains(seguro)) {
+            seguros.add(seguro);
+        }
+    }
+
+    /**
+     * Remove um seguro da lista de seguros do cliente.
+     * @param seguro o seguro a ser removido
+     */
+    public void removerSeguro(Seguro seguro) {
+        seguros.remove(seguro);
+    }
+
+    /**
+     * Atualiza o endereço do cliente.
+     * @param cep o novo CEP
+     * @param estado o novo estado
+     * @param cidade a nova cidade
+     * @param logradouro o novo logradouro
+     * @param numLogradouro o novo número do logradouro
+     */
+    public void atualizarEndereco(String cep, String estado, String cidade, String logradouro, String numLogradouro) {
+        this.cep = cep;
+        this.estado = estado;
+        this.cidade = cidade;
+        this.logradouro = logradouro;
+        this.numLogradouro = numLogradouro;
+    }
+
+    /**
+     * Valida o CPF.
+     * @param cpf o CPF a ser validado
+     * @return true se o CPF for válido, false caso contrário
+     */
+    public void setCpf(String cpf) {
+        if (ValidadorCpf.isCPF(cpf)) {
+            this.cpf = cpf;
+        } else {
+            throw new IllegalArgumentException("CPF inválido");
+        }
+    }
+
+    /**
+     * Valida o número de telefone.
+     * @param telefone o número de telefone a ser validado
+     * @return true se o número de telefone for válido, false caso contrário
+     */
+
+    public void setTelefone(String telefone) {
+        if (validarTelefone(telefone)) {
+            this.telefone = telefone;
+        } else {
+            throw new IllegalArgumentException("Número de telefone inválido");
+        }
+    }
+
+    /**
+     * Valida o número de telefone.
+     * @param telefone o número de telefone a ser validado
+     * @return true se o número de telefone for válido, false caso contrário
+     */
+    private boolean validarTelefone(String telefone) {
+        return telefone != null && telefone.matches("\\(\\d{2}\\) \\d{4,5}-\\d{4}");
+    }
+
 
     public String getNome() {
         return nome;
@@ -39,67 +113,31 @@ public class Cliente {
         return cpf;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
     public String getCep() {
         return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
     }
 
     public String getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
     public String getCidade() {
         return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        this.cidade = cidade;
     }
 
     public String getLogradouro() {
         return logradouro;
     }
 
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
-
     public String getNumLogradouro() {
         return numLogradouro;
-    }
-
-    public void setNumLogradouro(String numLogradouro) {
-        this.numLogradouro = numLogradouro;
     }
 
     public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public List<Seguro> getSeguros() {
         return seguros;
-    }
-
-    public void setSeguros(List<Seguro> seguros) {
-        this.seguros = seguros;
-    }
-
-    public void metodoCliente(){
-        System.out.println("Método do Cliente");
     }
 }
