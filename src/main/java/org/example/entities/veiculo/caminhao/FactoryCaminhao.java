@@ -2,7 +2,7 @@ package org.example.entities.veiculo.caminhao;
 
 import org.example.entities.veiculo.Factory;
 import org.example.entities.veiculo.VeiculoDeCarga;
-import org.example.entities.veiculo.moto.Tipo;
+import org.example.entities.veiculo.Tipo;
 
 public class FactoryCaminhao extends Factory {
     @Override

@@ -8,5 +8,9 @@ public interface Veiculo {
     String getTipo();
     HashMap obterDescricao();
     double calcularDepreciacao();
+    String getPlaca();
+    float getValorMercado();
+    int getAno();
 
+    Object getModelo();
 }

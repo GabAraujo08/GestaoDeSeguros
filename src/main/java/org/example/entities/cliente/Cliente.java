@@ -1,7 +1,7 @@
 package org.example.entities.cliente;
 
 import org.example.entities.seguro.Seguro;
-import org.example.entities.utility.ValidadorCpf;
+
 import org.example.service.ClienteService;
 
 import java.util.ArrayList;

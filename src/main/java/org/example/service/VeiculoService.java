@@ -2,13 +2,10 @@ package org.example.service;
 
 import org.example.config.DatabaseConfig;
 import org.example.entities.veiculo.Veiculo;
-import org.example.entities.veiculo.caminhao.Caminhao;
 import org.example.entities.veiculo.caminhao.FactoryCaminhao;
-import org.example.entities.veiculo.carro.Carro;
 import org.example.entities.veiculo.carro.FactoryCarro;
 import org.example.entities.veiculo.moto.FactoryMoto;
-import org.example.entities.veiculo.moto.Moto;
-import org.example.entities.veiculo.moto.Tipo;
+import org.example.entities.veiculo.Tipo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

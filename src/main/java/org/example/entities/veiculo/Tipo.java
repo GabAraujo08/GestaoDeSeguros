@@ -1,4 +1,4 @@
-package org.example.entities.veiculo.moto;
+package org.example.entities.veiculo;
 
 public enum Tipo {
     CARRO,

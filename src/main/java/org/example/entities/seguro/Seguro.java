@@ -33,7 +33,9 @@ public class Seguro {
      * sua lógica será feita de acordo com a regra de negócio de cada tipo de seguro.
      * @return double
      */
-    public abstract double calcularPremio();
+    public  double calcularPremio(){
+        return 0;
+    }
 
     /**
      * Esse método é responsável por executar a renovação do seguro, ao final atualize seu status verificando a data de vigência.

@@ -1,8 +1,7 @@
 package org.example.entities.veiculo.caminhao;
 
-import org.example.entities.veiculo.Veiculo;
 import org.example.entities.veiculo.VeiculoDeCarga;
-import org.example.entities.veiculo.moto.Tipo;
+import org.example.entities.veiculo.Tipo;
 
 import java.util.HashMap;
 
