@@ -1,13 +1,19 @@
 package org.example.dao.segurodao;
 
 import org.example.config.DatabaseConfig;
+import org.example.entities.cliente.Cliente;
 import org.example.entities.seguro.Seguro;
+import org.example.entities.veiculo.Veiculo;
 import org.example.exceptions.ClienteDaoException;
+import org.example.exceptions.SeguroDaoException;
+import org.example.service.ClienteService;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.example.service.VeiculoService.buscarVeiculoPorPlaca;
 
 public class SeguroImpl implements SeguroDao {
     private DatabaseConfig db;
@@ -38,8 +44,40 @@ public class SeguroImpl implements SeguroDao {
     }
 
     @Override
-    public List<Seguro> readAll(String placa) {
+    public List<Seguro> readAll() {
+        List<Seguro> result = new ArrayList<>();
+        String sql = "SELECT * FROM SEGURO";
 
+        try {
+            Connection connection = db.getConnection();
+            Statement stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                String numeroApolice = rs.getString("numeroApolice");
+                double valorParcelaSeguro = rs.getDouble("valorParcelaSeguro");
+                double premio = rs.getDouble("premio");
+                LocalDate dataInicioVigencia = rs.getDate("dataInicioVigencia").toLocalDate();
+                LocalDate dataFimVigencia = rs.getDate("dataFimVigencia").toLocalDate();
+                boolean status = rs.getBoolean("status");
+
+                String cpfCliente = rs.getString("cliente");  // Chave estrangeira do Cliente
+                String placaVeiculo = rs.getString("veiculo");  // Chave estrangeira do Veículo
+
+
+                Cliente cliente = ClienteService.buscarClientePorCpf(cpfCliente);
+
+                Veiculo veiculo = buscarVeiculoPorPlaca(placaVeiculo);
+
+
+                Seguro seguro = new Seguro(valorParcelaSeguro, numeroApolice, dataInicioVigencia, cliente, dataFimVigencia, veiculo);
+                result.add(seguro);
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new ClienteDaoException("Erro ao ler seguros.");
+        }
+        return result;
     }
 
     @Override

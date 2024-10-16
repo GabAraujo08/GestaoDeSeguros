@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Seguro {
+public class Seguro {
     private String numeroApolice;
     private double valorParcelaSeguro;
     private double premio;

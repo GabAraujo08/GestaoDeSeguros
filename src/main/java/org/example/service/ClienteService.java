@@ -1,10 +1,22 @@
 package org.example.service;
 
+import org.example.config.DatabaseConfig;
+import org.example.entities.cliente.Cliente;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 
 public class ClienteService {
+    private static DatabaseConfig db;
+
+    public ClienteService(DatabaseConfig db) {
+        ClienteService.db = db;
+    }
 
     /**
      * Valida um CPF.
@@ -60,5 +72,31 @@ public class ClienteService {
         } catch (InputMismatchException erro) {
             return(false);
         }
+    }
+
+    public static Cliente buscarClientePorCpf(String cpf) throws SQLException {
+        String sql = "SELECT * FROM CLIENTE WHERE cpf = ?";
+        Cliente cliente = null;
+
+        try (Connection connection = db.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                // Construa o objeto Cliente com os dados do ResultSet
+                String nome = rs.getString("nome");
+                String cep = rs.getString("cep");
+                String estado = rs.getString("estado");
+                String cidade = rs.getString("cidade");
+                String logradouro = rs.getString("logradouro");
+                String numLogradouro = rs.getString("numLogradouro");
+                String telefone = rs.getString("telefone");
+
+                cliente = new Cliente(nome, cpf, cep, estado, cidade, numLogradouro, logradouro, telefone);
+            }
+        }
+        return cliente;
     }
 }

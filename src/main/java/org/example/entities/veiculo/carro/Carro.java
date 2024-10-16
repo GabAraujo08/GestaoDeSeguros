@@ -1,15 +1,18 @@
 package org.example.entities.veiculo.carro;
 
 import org.example.entities.veiculo.Veiculo;
+import org.example.entities.veiculo.moto.Tipo;
 
 public final class Carro implements Veiculo {
+    private Tipo tipo;
     private String placa;
     private String marca;
     private String modelo;
     private int ano;
     private float valorMercado;
 
-    public Carro(String placa, String marca, String modelo, int ano, float valorMercado) {
+    public Carro(Tipo tipo, String placa, String marca, String modelo, int ano, float valorMercado) {
+        this.tipo = tipo;
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;

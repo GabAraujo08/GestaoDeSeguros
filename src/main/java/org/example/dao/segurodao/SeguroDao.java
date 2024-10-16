@@ -10,7 +10,7 @@ public interface SeguroDao {
 
     void create(Seguro seguro);
 
-    List<Seguro> readAll(String placa);
+    List<Seguro> readAll();
 
     void update(Seguro seguro);
 

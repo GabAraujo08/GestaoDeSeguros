@@ -3,6 +3,7 @@ package org.example.entities.veiculo.moto;
 import org.example.entities.veiculo.Veiculo;
 
 public class Moto implements Veiculo {
+    private Tipo tipo;
     private String placa;
     private String marca;
     private String modelo;
@@ -10,7 +11,8 @@ public class Moto implements Veiculo {
     private float valorMercado;
     private int cilindrada;
 
-    public Moto(String placa, String marca, String modelo, int ano, float valorMercado) {
+    public Moto(Tipo tipo, String placa, String marca, String modelo, int ano, float valorMercado) {
+        this.tipo = tipo;
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
@@ -28,7 +30,7 @@ public class Moto implements Veiculo {
 
     @Override
     public String getTipo() {
-        return "";
+        return "Moto";
     }
 
     @Override

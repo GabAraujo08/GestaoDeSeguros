@@ -2,8 +2,10 @@ package org.example.entities.veiculo.caminhao;
 
 import org.example.entities.veiculo.Veiculo;
 import org.example.entities.veiculo.VeiculoDeCarga;
+import org.example.entities.veiculo.moto.Tipo;
 
 public class Caminhao implements VeiculoDeCarga {
+    private Tipo tipo;
     private String placa;
     private String marca;
     private String modelo;
@@ -11,7 +13,8 @@ public class Caminhao implements VeiculoDeCarga {
     private float valorMercado;
     private double capacidadeCarga;
 
-    public Caminhao(String placa, String marca, String modelo, int ano, float valorMercado) {
+    public Caminhao(Tipo tipo, String placa, String marca, String modelo, int ano, float valorMercado) {
+        this.tipo = tipo;
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
