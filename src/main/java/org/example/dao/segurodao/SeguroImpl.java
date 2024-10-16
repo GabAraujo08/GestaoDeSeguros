@@ -39,7 +39,7 @@ public class SeguroImpl implements SeguroDao {
             pstmt.executeUpdate();
             connection.close();
         }catch (SQLException e){
-            throw new SeguroDaoException("Erro ao criar usuário.");
+            throw new SeguroDaoException("Erro ao criar novo seguro.");
         }
     }
 
@@ -82,11 +82,41 @@ public class SeguroImpl implements SeguroDao {
 
     @Override
     public void update(Seguro seguro) {
+        String sql = "UPDATE SEGURO SET valorParcelaSeguro = ?, dataInicioVigencia = ?, dataFimVigencia = ?WHERE numeroApolice = ?";
+        try{
+            Connection connection = db.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setDouble(1, seguro.getValorParcelaSeguro());
+            pstmt.setDate(2, java.sql.Date.valueOf(seguro.getDataInicioVigencia()));
+            pstmt.setDate(3, java.sql.Date.valueOf(seguro.getDataFimVigencia()));
+            pstmt.setString(4, seguro.getNumeroApolice());
 
+
+            int linhasAlteradas = pstmt.executeUpdate();
+            // Verifica se o CPF foi encontrado e deletado
+            if (linhasAlteradas == 0) {
+                throw new SeguroDaoException("Seguro não existe no banco.");
+            }
+            connection.close();
+        }catch(SQLException e) {
+            throw new SeguroDaoException("Erro ao atualizar seguro.");
+        }
     }
 
     @Override
     public void delete(String apolice) {
-
+        String sql = "DELETE FROM SEGURO WHERE numeroApolice = ?";
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            int linhasAlteradas = pstmt.executeUpdate();
+            if (linhasAlteradas == 0) {
+                throw new SeguroDaoException("Seguro não encontrado no banco de dados.");
+            }
+            connection.close();
+        } catch (SQLException e) {
+            throw new SeguroDaoException("Erro ao deletar seguro.");
+        }
+    }
     }
 }
