@@ -3,6 +3,8 @@ package org.example.entities.veiculo.carro;
 import org.example.entities.veiculo.Veiculo;
 import org.example.entities.veiculo.moto.Tipo;
 
+import java.util.HashMap;
+
 public final class Carro implements Veiculo {
     private Tipo tipo;
     private String placa;
@@ -27,33 +29,27 @@ public final class Carro implements Veiculo {
     }
 
     @Override
-    public String getPlaca() {
-        return placa;
+    public HashMap obterDescricao() {
+        HashMap<String, String> descricao = new HashMap<>();
+        descricao.put("Tipo", this.getTipo());
+        descricao.put("Placa", this.getPlaca());
+        descricao.put("Marca", this.getMarca());
+        descricao.put("Modelo", this.getModelo());
+        descricao.put("Ano", Integer.toString(this.getAno()));
+        descricao.put("Valor de Mercado", Float.toString(this.getValorMercado()));
+        return descricao;
     }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
-    }
-
+    
     @Override
-    public String getMarca() {
-        return marca;
+    public double calcularDepreciacao() {
+        int anoAtual = java.time.Year.now().getValue();
+        int idadeVeiculo = anoAtual - this.ano;
+        double taxaDepreciacao = 0.05; // 5% por ano
+        return this.valorMercado * Math.pow(1 - taxaDepreciacao, idadeVeiculo);
     }
 
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
 
-    @Override
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    @Override
     public float getValorMercado() {
         return valorMercado;
     }
@@ -62,9 +58,39 @@ public final class Carro implements Veiculo {
         this.valorMercado = valorMercado;
     }
 
-    @Override
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
     public int getAno() {
         return ano;
     }
 
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
 }

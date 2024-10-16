@@ -4,6 +4,8 @@ import org.example.entities.veiculo.Veiculo;
 import org.example.entities.veiculo.VeiculoDeCarga;
 import org.example.entities.veiculo.moto.Tipo;
 
+import java.util.HashMap;
+
 public class Caminhao implements VeiculoDeCarga {
     private Tipo tipo;
     private String placa;
@@ -34,6 +36,31 @@ public class Caminhao implements VeiculoDeCarga {
     }
 
     @Override
+    public HashMap obterDescricao() {
+        HashMap<String, String> descricao = new HashMap<>();
+        descricao.put("Tipo", this.getTipo());
+        descricao.put("Placa", this.getPlaca());
+        descricao.put("Marca", this.getMarca());
+        descricao.put("Modelo", this.getModelo());
+        descricao.put("Ano", Integer.toString(this.getAno()));
+        descricao.put("Valor de Mercado", Float.toString(this.getValorMercado()));
+        descricao.put("Capacidade de Carga", Double.toString(this.getCapacidadeCarga()));
+        return descricao;
+    }
+
+    @Override
+    public double calcularDepreciacao() {
+        int anoAtual = java.time.Year.now().getValue();
+        int idadeVeiculo = anoAtual - this.ano;
+        double taxaDepreciacao = 0.05; // 5% por ano
+        return this.valorMercado * Math.pow(1 - taxaDepreciacao, idadeVeiculo);
+    }
+
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
     public String getPlaca() {
         return placa;
     }
@@ -42,7 +69,6 @@ public class Caminhao implements VeiculoDeCarga {
         this.placa = placa;
     }
 
-    @Override
     public String getMarca() {
         return marca;
     }
@@ -51,16 +77,6 @@ public class Caminhao implements VeiculoDeCarga {
         this.marca = marca;
     }
 
-    @Override
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    @Override
     public int getAno() {
         return ano;
     }
@@ -69,7 +85,14 @@ public class Caminhao implements VeiculoDeCarga {
         this.ano = ano;
     }
 
-    @Override
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
     public float getValorMercado() {
         return valorMercado;
     }

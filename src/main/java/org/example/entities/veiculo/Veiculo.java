@@ -1,18 +1,12 @@
 package org.example.entities.veiculo;
 
+import java.util.HashMap;
+
 public interface Veiculo {
 
 
     String getTipo();
-
-    String getPlaca();
-
-    String getMarca();
-
-    String getModelo();
-
-    int getAno();
-
-    float getValorMercado();
+    HashMap obterDescricao();
+    double calcularDepreciacao();
 
 }
