@@ -11,11 +11,15 @@ import org.example.entities.seguro.caminhao.SeguroCaminhao;
 import org.example.entities.seguro.carro.SeguroCarro;
 import org.example.entities.seguro.moto.SeguroMoto;
 import org.example.entities.veiculo.Veiculo;
+import org.example.entities.veiculo.caminhao.FactoryCaminhao;
+import org.example.entities.veiculo.carro.FactoryCarro;
+import org.example.entities.veiculo.moto.FactoryMoto;
 import org.example.exceptions.cliente.ClienteDaoException;
 import org.example.exceptions.cliente.ClienteNotFoundException;
 import org.example.exceptions.seguro.SeguroAlreadyExistsException;
 import org.example.exceptions.seguro.SeguroDaoException;
 import org.example.exceptions.seguro.SeguroNotFoundException;
+import org.example.exceptions.veiculo.VeiculoDaoException;
 import org.example.exceptions.veiculo.VeiculoNotFoundException;
 
 import java.sql.*;
@@ -92,17 +96,18 @@ public class SeguroDaoImpl implements SeguroDao {
                     throw new SeguroDaoException("Veículo não encontrado.");
                 }
 
-                if (veiculo.getTipo().equals("Carro")) {
-                    SeguroCarro seguroCarro = new SeguroCarro(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
-                    result.add(seguroCarro);
-                }
-                if (veiculo.getTipo().equals("Moto")) {
-                    SeguroMoto seguroMoto = new SeguroMoto(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
-                    result.add(seguroMoto);
-                }
-                if (veiculo.getTipo().equals("Caminhão")) {
-                    SeguroCaminhao seguroCaminhao = new SeguroCaminhao(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
-                    result.add(seguroCaminhao);
+                switch (veiculo.getTipo()) {
+                    case "Carro":
+                        SeguroCarro seguroCarro = new SeguroCarro(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
+                        result.add(seguroCarro);
+                    case "Moto":
+                        SeguroMoto seguroMoto = new SeguroMoto(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
+                        result.add(seguroMoto);
+                    case "Caminhão":
+                        SeguroCaminhao seguroCaminhao = new SeguroCaminhao(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
+                        result.add(seguroCaminhao);
+                    default:
+                        throw new VeiculoDaoException("Erro ao identificar veículo");
                 }
             }
             connection.close();

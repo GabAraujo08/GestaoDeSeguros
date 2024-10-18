@@ -11,7 +11,7 @@ import org.example.exceptions.veiculo.VeiculoNotFoundException;
 import java.util.List;
 
 public interface VeiculoDao {
-    Veiculo create(Veiculo veiculo) throws VeiculoAlreadyExistsException;
+    Veiculo create(Veiculo veiculo) throws VeiculoAlreadyExistsException, VeiculoNotFoundException;
 
     List<Veiculo> readAll() throws VeiculoDaoException;
 
@@ -19,7 +19,7 @@ public interface VeiculoDao {
 
     void delete(String placa) throws VeiculoNotFoundException;
 
-    Boolean VeiculoByPlaca(String placa) throws VeiculoNotFoundException;
+    Boolean VeiculoExistsByPlaca(String placa) throws VeiculoDaoException;
 
     Veiculo findByPlaca(String placa) throws VeiculoNotFoundException ;
 }
