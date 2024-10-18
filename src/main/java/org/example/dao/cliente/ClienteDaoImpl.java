@@ -2,8 +2,8 @@ package org.example.dao.cliente;
 
 import org.example.config.DatabaseConfig;
 import org.example.entities.cliente.Cliente;
-import org.example.exceptions.ClienteDaoException;
-import org.example.exceptions.ClienteNotFoundException;
+import org.example.exceptions.cliente.ClienteDaoException;
+import org.example.exceptions.cliente.ClienteNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -119,4 +119,36 @@ public class ClienteDaoImpl implements ClienteDao{
         }
     }
 
+    /**
+     * Esse método é responsável por buscar um cliente pelo CPF e retorná-lo.
+     * @param cpf o CPF do cliente a ser buscado.
+     * @return O objeto do Cliente.
+     * @throws ClienteNotFoundException se o cliente não for encontrado.
+     */
+    @Override
+    public Cliente findByCpf(String cpf) throws ClienteNotFoundException {
+        String sql = "SELECT * FROM CLIENTE WHERE cpf = ?";
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, cpf);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String nome = rs.getString("nome");
+                String cep = rs.getString("cep");
+                String estado = rs.getString("estado");
+                String cidade = rs.getString("cidade");
+                String logradouro = rs.getString("logradouro");
+                String numLogradouro = rs.getString("numLogradouro");
+                String telefone = rs.getString("telefone");
+                Cliente cliente = new Cliente(nome, cpf, cep, estado, cidade, logradouro, numLogradouro, telefone);
+                connection.close();
+                return cliente;
+            } else {
+                throw new ClienteNotFoundException("Usuário não encontrado.");
+            }
+        } catch (SQLException e) {
+            throw new ClienteNotFoundException("Erro ao buscar usuário.");
+        }
+    }
 }

@@ -3,18 +3,22 @@ package org.example.dao.segurodao;
 import org.example.entities.cliente.Cliente;
 import org.example.entities.seguro.Seguro;
 import org.example.entities.veiculo.Veiculo;
+import org.example.exceptions.seguro.SeguroAlreadyExistsException;
+import org.example.exceptions.seguro.SeguroDaoException;
+import org.example.exceptions.seguro.SeguroNotFoundException;
 
 import java.util.List;
 
 public interface SeguroDao {
 
-    void create(Seguro seguro);
+    Seguro create(Seguro seguro) throws SeguroAlreadyExistsException;
 
-    List<Seguro> readAll();
+    List<Seguro> readAll() throws SeguroDaoException;
 
-    void update(Seguro seguro);
+    Seguro update(Seguro seguro) throws SeguroNotFoundException;
 
-    void delete(String apolice);
+    void delete(String apolice) throws SeguroNotFoundException;
 
+    Boolean SeguroByApolice(String apolice) throws SeguroDaoException;
 
 }

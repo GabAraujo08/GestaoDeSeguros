@@ -1,8 +1,8 @@
 package org.example.service.cliente;
 
 import org.example.entities.cliente.Cliente;
-import org.example.exceptions.ClienteAlreadyExistsException;
-import org.example.exceptions.ClienteNotFoundException;
+import org.example.exceptions.cliente.ClienteAlreadyExistsException;
+import org.example.exceptions.cliente.ClienteNotFoundException;
 
 import java.util.List;
 

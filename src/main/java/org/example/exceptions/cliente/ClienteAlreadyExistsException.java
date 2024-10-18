@@ -1,4 +1,4 @@
-package org.example.exceptions;
+package org.example.exceptions.cliente;
 
 public class ClienteAlreadyExistsException extends Exception {
     public ClienteAlreadyExistsException(String message) {

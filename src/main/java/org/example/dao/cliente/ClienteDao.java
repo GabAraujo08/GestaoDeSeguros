@@ -1,8 +1,8 @@
 package org.example.dao.cliente;
 
 import org.example.entities.cliente.Cliente;
-import org.example.exceptions.ClienteDaoException;
-import org.example.exceptions.ClienteNotFoundException;
+import org.example.exceptions.cliente.ClienteDaoException;
+import org.example.exceptions.cliente.ClienteNotFoundException;
 
 import java.util.List;
 
@@ -16,4 +16,6 @@ public interface ClienteDao {
     void delete(String cpf) throws ClienteNotFoundException;
 
     Boolean existsClienteByCpf(String cpf) throws ClienteDaoException;
+
+    Cliente findByCpf(String cpf) throws ClienteNotFoundException;
 }

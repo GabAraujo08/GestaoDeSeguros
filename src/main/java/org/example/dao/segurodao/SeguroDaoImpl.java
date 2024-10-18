@@ -1,32 +1,45 @@
 package org.example.dao.segurodao;
 
 import org.example.config.DatabaseConfig;
+import org.example.dao.cliente.ClienteDao;
+import org.example.dao.cliente.ClienteDaoFactory;
+import org.example.dao.veiculodao.VeiculoDao;
+import org.example.dao.veiculodao.VeiculoDaoFactory;
 import org.example.entities.cliente.Cliente;
 import org.example.entities.seguro.Seguro;
+import org.example.entities.seguro.caminhao.SeguroCaminhao;
+import org.example.entities.seguro.carro.SeguroCarro;
+import org.example.entities.seguro.moto.SeguroMoto;
 import org.example.entities.veiculo.Veiculo;
-import org.example.exceptions.ClienteDaoException;
-import org.example.exceptions.SeguroDaoException;
-import org.example.service.cliente.ClienteServiceImpl;
+import org.example.exceptions.cliente.ClienteDaoException;
+import org.example.exceptions.cliente.ClienteNotFoundException;
+import org.example.exceptions.seguro.SeguroAlreadyExistsException;
+import org.example.exceptions.seguro.SeguroDaoException;
+import org.example.exceptions.seguro.SeguroNotFoundException;
+import org.example.exceptions.veiculo.VeiculoNotFoundException;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.example.service.VeiculoService.buscarVeiculoPorPlaca;
-
-public class SeguroImpl implements SeguroDao {
+public class SeguroDaoImpl implements SeguroDao {
     private DatabaseConfig db;
+    private ClienteDao clienteDao = ClienteDaoFactory.create();
+    private VeiculoDao veiculoDao = VeiculoDaoFactory.create();
 
-    public SeguroImpl(DatabaseConfig db) {
-        this.db = db;
-    }
+
+
     @Override
-    public void create(Seguro seguro) {
+    public Seguro create(Seguro seguro) throws SeguroAlreadyExistsException {
         // Aqui a apólice não é passada pois seria auto gerada pelo banco de dados.
         // Status não é passado pois é definido de acordo com a data de vigência.
+        if(SeguroByApolice(seguro.getNumeroApolice())){
+            throw new SeguroAlreadyExistsException("Seguro já cadastrado.");
+        }
         String sql = "INSERT INTO SEGURO(valorParcelaSeguro, premio, dataInicioVigencia, dataFimVigencia, cliente, veiculo) values(?,?,?,?,?,?,?)";
-        try{
+
+        try {
             Connection connection = db.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setDouble(1, seguro.getValorParcelaSeguro());
@@ -38,13 +51,14 @@ public class SeguroImpl implements SeguroDao {
             pstmt.setBoolean(7, seguro.isStatus());
             pstmt.executeUpdate();
             connection.close();
-        }catch (SQLException e){
+            return seguro;
+        } catch (SQLException e) {
             throw new SeguroDaoException("Erro ao criar novo seguro.");
         }
     }
 
     @Override
-    public List<Seguro> readAll() {
+    public List<Seguro> readAll() throws SeguroDaoException {
         List<Seguro> result = new ArrayList<>();
         String sql = "SELECT * FROM SEGURO";
 
@@ -64,26 +78,44 @@ public class SeguroImpl implements SeguroDao {
                 String cpfCliente = rs.getString("cliente");  // Chave estrangeira do Cliente
                 String placaVeiculo = rs.getString("veiculo");  // Chave estrangeira do Veículo
 
+                Cliente cliente = null;
+                try {
+                    cliente = clienteDao.findByCpf(cpfCliente);
+                } catch (ClienteNotFoundException e) {
+                    throw new SeguroDaoException("Cliente não encontrado.");
+                }
 
-                Cliente cliente = ClienteServiceImpl.buscarClientePorCpf(cpfCliente);
+                Veiculo veiculo = null;
+                try {
+                    veiculo = veiculoDao.findByPlaca(placaVeiculo);
+                } catch (VeiculoNotFoundException e) {
+                    throw new SeguroDaoException("Veículo não encontrado.");
+                }
 
-                Veiculo veiculo = buscarVeiculoPorPlaca(placaVeiculo);
-
-
-                Seguro seguro = new Seguro(valorParcelaSeguro, numeroApolice, dataInicioVigencia, cliente, dataFimVigencia, veiculo);
-                result.add(seguro);
+                if (veiculo.getTipo().equals("Carro")) {
+                    SeguroCarro seguroCarro = new SeguroCarro(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
+                    result.add(seguroCarro);
+                }
+                if (veiculo.getTipo().equals("Moto")) {
+                    SeguroMoto seguroMoto = new SeguroMoto(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
+                    result.add(seguroMoto);
+                }
+                if (veiculo.getTipo().equals("Caminhão")) {
+                    SeguroCaminhao seguroCaminhao = new SeguroCaminhao(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
+                    result.add(seguroCaminhao);
+                }
             }
             connection.close();
         } catch (SQLException e) {
-            throw new ClienteDaoException("Erro ao ler seguros.");
+            throw new SeguroDaoException("Erro ao ler seguros.");
         }
         return result;
     }
 
     @Override
-    public void update(Seguro seguro) {
+    public Seguro update(Seguro seguro) throws SeguroNotFoundException{
         String sql = "UPDATE SEGURO SET valorParcelaSeguro = ?, dataInicioVigencia = ?, dataFimVigencia = ?WHERE numeroApolice = ?";
-        try{
+        try {
             Connection connection = db.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setDouble(1, seguro.getValorParcelaSeguro());
@@ -95,28 +127,50 @@ public class SeguroImpl implements SeguroDao {
             int linhasAlteradas = pstmt.executeUpdate();
             // Verifica se o CPF foi encontrado e deletado
             if (linhasAlteradas == 0) {
-                throw new SeguroDaoException("Seguro não existe no banco.");
+                throw new SeguroNotFoundException("Seguro não existe no banco.");
             }
             connection.close();
-        }catch(SQLException e) {
+            return seguro;
+        } catch (SQLException e) {
             throw new SeguroDaoException("Erro ao atualizar seguro.");
         }
     }
 
+
     @Override
-    public void delete(String apolice) {
+    public void delete(String apolice) throws SeguroNotFoundException  {
         String sql = "DELETE FROM SEGURO WHERE numeroApolice = ?";
         try {
             Connection connection = db.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql);
             int linhasAlteradas = pstmt.executeUpdate();
             if (linhasAlteradas == 0) {
-                throw new SeguroDaoException("Seguro não encontrado no banco de dados.");
+                throw new SeguroNotFoundException("Seguro não encontrado.");
             }
             connection.close();
         } catch (SQLException e) {
             throw new SeguroDaoException("Erro ao deletar seguro.");
         }
     }
+
+    @Override
+    public Boolean SeguroByApolice(String apolice) throws SeguroDaoException {
+        String sql = "SELECT * FROM SEGURO WHERE numeroApolice = ?";
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, apolice);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                connection.close();
+                return true;
+            } else {
+                connection.close();
+                return false;
+            }
+        } catch (SQLException e) {
+            throw new SeguroDaoException("Erro ao buscar seguro.");
+        }
     }
+}
 

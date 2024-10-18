@@ -1,17 +1,16 @@
 package org.example.service.cliente;
 
-import org.example.config.DatabaseConfig;
 import org.example.dao.cliente.ClienteDao;
 import org.example.dao.cliente.ClienteDaoFactory;
 import org.example.entities.cliente.Cliente;
-import org.example.exceptions.ClienteAlreadyExistsException;
-import org.example.exceptions.ClienteNotFoundException;
+import org.example.exceptions.cliente.ClienteAlreadyExistsException;
+import org.example.exceptions.cliente.ClienteNotFoundException;
 
 import java.util.List;
 
 public class ClienteServiceImpl implements ClienteService{
 
-    private ClienteDao clienteDao = ClienteDaoFactory.create();
+    private final ClienteDao clienteDao = ClienteDaoFactory.create();
 
     public Cliente save(Cliente cliente) throws ClienteAlreadyExistsException {
         if(clienteDao.existsClienteByCpf(cliente.getCpf())){
