@@ -5,7 +5,6 @@ import org.example.entities.veiculo.Veiculo;
 import org.example.entities.veiculo.caminhao.FactoryCaminhao;
 import org.example.entities.veiculo.carro.FactoryCarro;
 import org.example.entities.veiculo.moto.FactoryMoto;
-import org.example.entities.veiculo.Tipo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,15 +41,15 @@ public class VeiculoService {
                 switch (tipo) {
                     case CARRO:
                         FactoryCarro factoryCarro = new FactoryCarro();
-                        Veiculo carro = factoryCarro.createVeiculo(tipo, placa, marca, modelo, ano, valorMercado);
+                        Veiculo carro = factoryCarro.createCarro(tipo, placa, marca, modelo, ano, valorMercado);
                         break;
                     case MOTO:
                         FactoryMoto factoryMoto = new FactoryMoto();
-                        Veiculo moto = factoryMoto.createVeiculo(tipo, placa, marca, modelo, ano, valorMercado);
+                        Veiculo moto = factoryMoto.createMoto(tipo, placa, marca, modelo, ano, valorMercado);
                         break;
                     case CAMINHAO:
                         FactoryCaminhao factoryCaminhao = new FactoryCaminhao();
-                        Veiculo caminhao = factoryCaminhao.createVeiculo(tipo, placa, marca, modelo, ano, valorMercado);
+                        Veiculo caminhao = factoryCaminhao.createCaminhao(tipo, placa, marca, modelo, ano, valorMercado);
                         break;
                     default:
                         throw new IllegalArgumentException("Tipo de veículo desconhecido: " + tipo);

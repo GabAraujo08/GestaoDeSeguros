@@ -1,16 +1,18 @@
 package org.example.entities.veiculo;
 
-import java.util.HashMap;
+import org.example.entities.enums.Marca;
 
-public interface Veiculo {
+import java.util.Map;
+
+public interface Veiculo<T> {
 
 
     String getTipo();
-    HashMap obterDescricao();
-    double calcularDepreciacao();
     String getPlaca();
+    Map obterDescricao();
+    double calcularDepreciacao();
     float getValorMercado();
     int getAno();
-
-    Object getModelo();
+    String getModelo();
+    Marca getMarca();
 }

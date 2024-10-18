@@ -3,16 +3,17 @@ package org.example.entities.seguro.caminhao;
 import org.example.entities.cliente.Cliente;
 import org.example.entities.seguro.Seguro;
 import org.example.entities.veiculo.Veiculo;
-import org.example.entities.veiculo.VeiculoDeCarga;
-import org.example.entities.veiculo.caminhao.Caminhao;
+import org.example.entities.veiculo.Caminhao;
+import org.example.entities.veiculo.caminhao.FactoryCaminhao;
 
 import java.time.LocalDate;
 
 public class SeguroCaminhao extends Seguro {
 
+    private Caminhao caminhao = FactoryCaminhao.createCaminhao(getVeiculo().getTipo(), getVeiculo().getMarca(), getVeiculo().getModelo(), getVeiculo().getAno(), getVeiculo().getValorMercado());
 
-    public SeguroCaminhao(double valorParcelaSeguro, String numeroApolice, LocalDate dataInicioVigencia, Cliente cliente, LocalDate dataFimVigencia, Veiculo veiculo) {
-        super(valorParcelaSeguro, numeroApolice, dataInicioVigencia, cliente, dataFimVigencia, veiculo);
+    public SeguroCaminhao(double valorParcelaSeguro, LocalDate dataInicioVigencia, LocalDate dataFimVigencia, Cliente cliente, Veiculo veiculo) {
+        super(valorParcelaSeguro, dataInicioVigencia, dataFimVigencia, cliente, veiculo);
     }
 
     /**
@@ -34,13 +35,10 @@ public class SeguroCaminhao extends Seguro {
         }
 
         double fatorCarga = 1.0;
-        if (getVeiculo() instanceof VeiculoDeCarga) {
-            VeiculoDeCarga veiculoDeCarga = (VeiculoDeCarga) getVeiculo();
-            if (veiculoDeCarga.getCapacidadeCarga() > 20000) {
-                fatorCarga = 1.2;
-            } else if (veiculoDeCarga.getCapacidadeCarga() > 10000) {
-                fatorCarga = 1.1;
-            }
+        if (caminhao.getCapacidadeCarga() > 20000) {
+            fatorCarga = 1.2;
+        } else if (caminhao.getCapacidadeCarga() > 10000) {
+            fatorCarga = 1.1;
         }
 
         return premioBase * fatorAno * fatorCarga;

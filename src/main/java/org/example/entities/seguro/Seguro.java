@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Seguro {
+public abstract class Seguro {
     private String numeroApolice;
     private double valorParcelaSeguro;
     private double premio;
@@ -17,15 +17,14 @@ public class Seguro {
     private Veiculo veiculo;
     private boolean status;
 
-    public Seguro(double valorParcelaSeguro, String numeroApolice, LocalDate dataInicioVigencia, Cliente cliente, LocalDate dataFimVigencia, Veiculo veiculo) {
+    public Seguro(double valorParcelaSeguro, LocalDate dataInicioVigencia, LocalDate dataFimVigencia, Cliente cliente, Veiculo veiculo) {
         this.valorParcelaSeguro = valorParcelaSeguro;
-        this.numeroApolice = numeroApolice;
-        this.premio = calcularPremio();
         this.dataInicioVigencia = dataInicioVigencia;
-        this.cliente = cliente;
         this.dataFimVigencia = dataFimVigencia;
+        this.cliente = cliente;
         this.veiculo = veiculo;
-        atualizarStatus();
+        this.premio = calcularPremio();
+        this.status = verificarValidade();
     }
 
     /**
@@ -33,9 +32,7 @@ public class Seguro {
      * sua lógica será feita de acordo com a regra de negócio de cada tipo de seguro.
      * @return double
      */
-    public  double calcularPremio(){
-        return 0;
-    }
+    public abstract double calcularPremio();
 
     /**
      * Esse método é responsável por executar a renovação do seguro, ao final atualize seu status verificando a data de vigência.

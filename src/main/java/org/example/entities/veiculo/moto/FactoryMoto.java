@@ -1,13 +1,16 @@
 package org.example.entities.veiculo.moto;
 
-import org.example.entities.veiculo.Factory;
-import org.example.entities.veiculo.Tipo;
+import org.example.entities.enums.Marca;
 import org.example.entities.veiculo.Veiculo;
 
-public class FactoryMoto extends Factory {
-    @Override
-    public Veiculo createVeiculo(Tipo tipo, String placa, String marca, String modelo, int ano, float valorMercado) {
-        return new Moto(tipo, placa, marca, modelo, ano, valorMercado);
+public class FactoryMoto {
+
+    private FactoryMoto() {
+    }
+
+    public static org.example.entities.veiculo.Moto createMoto(String placa, Marca marca, String modelo, int ano, float valorMercado) {
+        //return new Moto(placa, marca, modelo, ano, valorMercado);
+        return new Moto(placa, marca, modelo, ano, valorMercado);
     }
 
 }

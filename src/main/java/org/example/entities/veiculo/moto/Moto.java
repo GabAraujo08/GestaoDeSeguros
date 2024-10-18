@@ -1,31 +1,34 @@
 package org.example.entities.veiculo.moto;
 
-import org.example.entities.veiculo.Tipo;
-import org.example.entities.veiculo.Veiculo;
+import org.example.entities.enums.Marca;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public class Moto implements Veiculo {
-    private Tipo tipo;
+public final class Moto implements org.example.entities.veiculo.Moto {
+    private final String tipo = "Moto";
     private String placa;
-    private String marca;
+    private Marca marca;
     private String modelo;
     private int ano;
     private float valorMercado;
     private int cilindrada;
 
-    public Moto(Tipo tipo, String placa, String marca, String modelo, int ano, float valorMercado) {
-        this.tipo = tipo;
+    public Moto(String placa, Marca marca, String modelo, int ano, float valorMercado) {
+
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
         this.valorMercado = valorMercado;
+
     }
 
+    @Override
     public int getCilindrada() {
-        return cilindrada;
+        return this.cilindrada;
     }
+
 
     public void setCilindrada(int cilindradas) {
         this.cilindrada = cilindradas;
@@ -33,22 +36,22 @@ public class Moto implements Veiculo {
 
     @Override
     public String getTipo() {
-        return "Moto";
+        return this.tipo;
     }
 
     @Override
-    public HashMap obterDescricao() {
-        HashMap<String, String> descricao = new HashMap<>();
-        descricao.put("Tipo", this.getTipo());
-        descricao.put("Placa", this.getPlaca());
-        descricao.put("Marca", this.getMarca());
-        descricao.put("Modelo", this.getModelo());
-        descricao.put("Ano", Integer.toString(this.getAno()));
-        descricao.put("Valor de Mercado", Float.toString(this.getValorMercado()));
-        descricao.put("Cilindrada", Integer.toString(this.getCilindrada()));
+    public Map<String, String> obterDescricao() {
+        Map<String, String> descricao = new HashMap<>();
+        descricao.put("Tipo", this.tipo);
+        descricao.put("Marca", this.marca.toString());
+        descricao.put("Modelo", this.modelo);
+        descricao.put("Ano", Integer.toString(this.ano));
+        descricao.put("Valor de Mercado", Float.toString(this.valorMercado));
+        descricao.put("Cilindrada", Integer.toString(this.cilindrada));
         return descricao;
     }
-
+    
+    
     @Override
     public double calcularDepreciacao() {
         int anoAtual = java.time.Year.now().getValue();
@@ -56,11 +59,7 @@ public class Moto implements Veiculo {
         double taxaDepreciacao = 0.05; // 5% por ano
         return this.valorMercado * Math.pow(1 - taxaDepreciacao, idadeVeiculo);
     }
-
-
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
+    // Getters e Setters
 
     public String getPlaca() {
         return placa;
@@ -70,11 +69,11 @@ public class Moto implements Veiculo {
         this.placa = placa;
     }
 
-    public String getMarca() {
+    public Marca getMarca() {
         return marca;
     }
 
-    public void setMarca(String marca) {
+    public void setMarca(Marca marca) {
         this.marca = marca;
     }
 

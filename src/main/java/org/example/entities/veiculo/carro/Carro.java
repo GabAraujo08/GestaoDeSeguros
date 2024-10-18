@@ -1,46 +1,42 @@
 package org.example.entities.veiculo.carro;
 
-import org.example.entities.veiculo.Veiculo;
-import org.example.entities.veiculo.Tipo;
+import org.example.entities.enums.Marca;
 
 import java.util.HashMap;
+import java.util.Map;
 
-public final class Carro implements Veiculo {
-    private Tipo tipo;
+public final class Carro implements org.example.entities.veiculo.Carro {
+    private final String tipo = "Carro";
     private String placa;
-    private String marca;
+    private Marca marca;
     private String modelo;
     private int ano;
     private float valorMercado;
 
-    public Carro(Tipo tipo, String placa, String marca, String modelo, int ano, float valorMercado) {
-        this.tipo = tipo;
+    public Carro(String placa, Marca marca, String modelo, int ano, float valorMercado) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
         this.valorMercado = valorMercado;
-
     }
 
     @Override
     public String getTipo() {
-        return "Carro";
+        return this.tipo;
     }
 
     @Override
-    public HashMap obterDescricao() {
-        HashMap<String, String> descricao = new HashMap<>();
-        descricao.put("Tipo", this.getTipo());
-        descricao.put("Placa", this.getPlaca());
-        descricao.put("Marca", this.getMarca());
-        descricao.put("Modelo", this.getModelo());
-        descricao.put("Ano", Integer.toString(this.getAno()));
-        descricao.put("Valor de Mercado", Float.toString(this.getValorMercado()));
+    public Map<String, String> obterDescricao() {
+        Map<String, String> descricao = new HashMap<>();
+        descricao.put("Tipo", this.tipo);
+        descricao.put("Marca", this.marca.toString());
+        descricao.put("Modelo", this.modelo);
+        descricao.put("Ano", Integer.toString(this.ano));
+        descricao.put("Valor de Mercado", Float.toString(this.valorMercado));
         return descricao;
     }
 
-    
     @Override
     public double calcularDepreciacao() {
         int anoAtual = java.time.Year.now().getValue();
@@ -49,6 +45,12 @@ public final class Carro implements Veiculo {
         return this.valorMercado * Math.pow(1 - taxaDepreciacao, idadeVeiculo);
     }
 
+    @Override
+    public Marca getMarca() {
+        return marca;
+    }
+
+    // Getters e Setters
 
     public float getValorMercado() {
         return valorMercado;
@@ -58,15 +60,7 @@ public final class Carro implements Veiculo {
         this.valorMercado = valorMercado;
     }
 
-    public void setTipo(Tipo tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
+    public void setMarca(Marca marca) {
         this.marca = marca;
     }
 

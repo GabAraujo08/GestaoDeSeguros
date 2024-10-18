@@ -3,7 +3,6 @@ package org.example.service;
 import org.example.entities.cliente.Cliente;
 import org.example.entities.seguro.Seguro;
 import org.example.entities.seguro.caminhao.SeguroCaminhao;
-import org.example.entities.veiculo.Tipo;
 import org.example.entities.veiculo.Veiculo;
 import org.example.entities.veiculo.caminhao.FactoryCaminhao;
 
@@ -49,6 +48,6 @@ public class SeguroService {
     }
 
     public Veiculo criarCaminhao(Tipo tipo, String placa, String marca, String modelo, int ano, float valorMercado) {
-        return factoryCaminhao.createVeiculo(tipo, placa, marca, modelo, ano, valorMercado); // Cria um caminhão
+        return factoryCaminhao.createCaminhao(tipo, placa, marca, modelo, ano, valorMercado); // Cria um caminhão
     }
 }

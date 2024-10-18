@@ -6,7 +6,7 @@ import org.example.entities.seguro.Seguro;
 import org.example.entities.veiculo.Veiculo;
 import org.example.exceptions.ClienteDaoException;
 import org.example.exceptions.SeguroDaoException;
-import org.example.service.ClienteService;
+import org.example.service.cliente.ClienteServiceImpl;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -65,7 +65,7 @@ public class SeguroImpl implements SeguroDao {
                 String placaVeiculo = rs.getString("veiculo");  // Chave estrangeira do Veículo
 
 
-                Cliente cliente = ClienteService.buscarClientePorCpf(cpfCliente);
+                Cliente cliente = ClienteServiceImpl.buscarClientePorCpf(cpfCliente);
 
                 Veiculo veiculo = buscarVeiculoPorPlaca(placaVeiculo);
 

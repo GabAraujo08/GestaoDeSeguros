@@ -3,21 +3,19 @@ package org.example.dao.cliente;
 import org.example.config.DatabaseConfig;
 import org.example.entities.cliente.Cliente;
 import org.example.exceptions.ClienteDaoException;
+import org.example.exceptions.ClienteNotFoundException;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class ClienteImpl implements ClienteDao{
+public class ClienteDaoImpl implements ClienteDao{
 
     private DatabaseConfig db;
 
-    public ClienteImpl(DatabaseConfig db) {
-        this.db = db;
-    }
     @Override
-    public void create(Cliente cliente) {
+    public Cliente create(Cliente cliente) throws ClienteDaoException {
+
         String sql = "INSERT INTO CLIENTE(nome, cpf, cep, estado, cidade, logradouro, numLogradouro, telefone) values(?,?,?,?,?,?,?,?)";
         try{
             Connection connection = db.getConnection();
@@ -32,13 +30,14 @@ public class ClienteImpl implements ClienteDao{
             pstmt.setString(8, cliente.getTelefone());
             pstmt.executeUpdate();
             connection.close();
+            return cliente;
         }catch (SQLException e){
             throw new ClienteDaoException("Erro ao criar usuário.");
         }
     }
 
     @Override
-    public List<Cliente> readAll() {
+    public List<Cliente> readAll() throws ClienteDaoException{
             List<Cliente> result = new ArrayList<>();
             String sql = "SELECT * FROM CLIENTE";
             try {
@@ -59,7 +58,6 @@ public class ClienteImpl implements ClienteDao{
                 }
                 connection.close();
             }catch(SQLException e){
-                //e.printStackTrace();
                 throw new ClienteDaoException("Erro ao ler usuários.");
             }
             return result;
@@ -67,8 +65,9 @@ public class ClienteImpl implements ClienteDao{
     
 
     @Override
-    public void update(Cliente cliente) {
+    public Cliente update(Cliente cliente) throws ClienteDaoException{
         String sql = "UPDATE CLIENTE SET nome = ?, cep = ?, estado = ?, cidade = ?, logradouro = ?, numLogradouro = ?, telefone = ? WHERE cpf = ?";
+
         try{
             Connection connection = db.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -81,30 +80,43 @@ public class ClienteImpl implements ClienteDao{
             pstmt.setString(7, cliente.getNumLogradouro());
             pstmt.setString(8, cliente.getTelefone());
 
-            int linhasAlteradas = pstmt.executeUpdate();
-            // Verifica se o CPF foi encontrado e deletado
-            if (linhasAlteradas == 0) {
-                throw new ClienteDaoException("Usuário não existe no banco.");
-            }
             connection.close();
+            return cliente;
         }catch(SQLException e) {
             throw new ClienteDaoException("Erro ao atualizar usuário.");
         }
     }
 
     @Override
-    public void delete(String cpf) {
+    public void delete(String cpf) throws ClienteNotFoundException{
         String sql = "DELETE FROM CLIENTE WHERE cpf = ?";
         try {
             Connection connection = db.getConnection();
             PreparedStatement pstmt = connection.prepareStatement(sql);
             int linhasAlteradas = pstmt.executeUpdate();
             if (linhasAlteradas == 0) {
-                throw new ClienteDaoException("CPF não encontrado no banco de dados.");
+                throw new ClienteNotFoundException("Usuário não encontrado.");
             }
             connection.close();
         } catch (SQLException e) {
             throw new ClienteDaoException("Erro ao deletar usuário.");
         }
     }
+
+    @Override
+    public Boolean existsClienteByCpf(String cpf) throws ClienteDaoException {
+        String sql = "SELECT * FROM CLIENTE WHERE cpf = ?";
+        try {
+            Connection connection = db.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, cpf);
+            ResultSet rs = pstmt.executeQuery();
+            Boolean result = rs.next();
+            connection.close();
+            return result;
+        } catch (SQLException e) {
+            throw new ClienteDaoException("Erro ao verificar se usuário existe.");
+        }
+    }
+
 }
