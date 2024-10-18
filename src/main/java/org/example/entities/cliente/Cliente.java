@@ -2,6 +2,7 @@ package org.example.entities.cliente;
 
 import org.example.entities.seguro.Seguro;
 
+import org.example.entities.utility.CpfValidator;
 import org.example.service.cliente.ClienteServiceImpl;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class Cliente {
      * @return true se o CPF for válido, false caso contrário
      */
     public void setCpf(String cpf) {
-        if (ClienteServiceImpl.isCPF(cpf)) {
+        if (CpfValidator.isCPF(cpf)) {
             this.cpf = cpf;
         } else {
             throw new IllegalArgumentException("CPF inválido");

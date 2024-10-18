@@ -1,4 +1,4 @@
-package org.example.dao.segurodao;
+package org.example.dao.seguro;
 
 public class SeguroDaoFactory {
     private SeguroDaoFactory() {

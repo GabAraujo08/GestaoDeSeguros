@@ -1,20 +1,16 @@
-package org.example.dao.segurodao;
+package org.example.dao.seguro;
 
 import org.example.config.DatabaseConfig;
 import org.example.dao.cliente.ClienteDao;
 import org.example.dao.cliente.ClienteDaoFactory;
-import org.example.dao.veiculodao.VeiculoDao;
-import org.example.dao.veiculodao.VeiculoDaoFactory;
+import org.example.dao.veiculo.VeiculoDao;
+import org.example.dao.veiculo.VeiculoDaoFactory;
 import org.example.entities.cliente.Cliente;
 import org.example.entities.seguro.Seguro;
 import org.example.entities.seguro.caminhao.SeguroCaminhao;
 import org.example.entities.seguro.carro.SeguroCarro;
 import org.example.entities.seguro.moto.SeguroMoto;
 import org.example.entities.veiculo.Veiculo;
-import org.example.entities.veiculo.caminhao.FactoryCaminhao;
-import org.example.entities.veiculo.carro.FactoryCarro;
-import org.example.entities.veiculo.moto.FactoryMoto;
-import org.example.exceptions.cliente.ClienteDaoException;
 import org.example.exceptions.cliente.ClienteNotFoundException;
 import org.example.exceptions.seguro.SeguroAlreadyExistsException;
 import org.example.exceptions.seguro.SeguroDaoException;

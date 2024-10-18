@@ -1,19 +1,13 @@
 package org.example.service.veiculo;
 
 import org.example.config.DatabaseConfig;
-import org.example.dao.veiculodao.VeiculoDao;
-import org.example.dao.veiculodao.VeiculoDaoFactory;
+import org.example.dao.veiculo.VeiculoDao;
+import org.example.dao.veiculo.VeiculoDaoFactory;
 import org.example.entities.veiculo.Veiculo;
-import org.example.entities.veiculo.caminhao.FactoryCaminhao;
-import org.example.entities.veiculo.carro.FactoryCarro;
-import org.example.entities.veiculo.moto.FactoryMoto;
 import org.example.exceptions.veiculo.VeiculoAlreadyExistsException;
+import org.example.exceptions.veiculo.VeiculoDaoException;
 import org.example.exceptions.veiculo.VeiculoNotFoundException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
 public class VeiculoServiceImpl implements VeiculoService {
@@ -22,7 +16,7 @@ public class VeiculoServiceImpl implements VeiculoService {
     private VeiculoDao veiculoDao = VeiculoDaoFactory.create();
 
     @Override
-    public Veiculo save(Veiculo veiculo) throws VeiculoAlreadyExistsException, VeiculoNotFoundException {
+    public Veiculo save(Veiculo veiculo) throws VeiculoAlreadyExistsException, VeiculoDaoException {
         if(veiculoDao.VeiculoExistsByPlaca(veiculo.getPlaca())){
             throw new VeiculoAlreadyExistsException("Veículo já cadastrado.");
         }

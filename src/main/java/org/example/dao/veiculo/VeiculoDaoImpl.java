@@ -1,9 +1,7 @@
-package org.example.dao.veiculodao;
+package org.example.dao.veiculo;
 
 import org.example.config.DatabaseConfig;
 import org.example.entities.enums.Marca;
-import org.example.entities.veiculo.Carro;
-import org.example.entities.veiculo.Moto;
 import org.example.entities.veiculo.Veiculo;
 import org.example.entities.veiculo.caminhao.FactoryCaminhao;
 import org.example.entities.veiculo.carro.FactoryCarro;

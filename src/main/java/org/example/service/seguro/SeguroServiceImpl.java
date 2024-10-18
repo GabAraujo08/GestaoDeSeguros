@@ -1,7 +1,7 @@
 package org.example.service.seguro;
 
-import org.example.dao.segurodao.SeguroDao;
-import org.example.dao.segurodao.SeguroDaoFactory;
+import org.example.dao.seguro.SeguroDao;
+import org.example.dao.seguro.SeguroDaoFactory;
 import org.example.entities.seguro.Seguro;
 import org.example.exceptions.seguro.SeguroAlreadyExistsException;
 import org.example.exceptions.seguro.SeguroNotFoundException;

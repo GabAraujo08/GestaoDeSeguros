@@ -1,4 +1,4 @@
-package org.example.dao.veiculodao;
+package org.example.dao.veiculo;
 
 public class VeiculoDaoFactory {
     private VeiculoDaoFactory() {

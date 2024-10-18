@@ -2,6 +2,7 @@ package org.example.dao.cliente;
 
 import org.example.config.DatabaseConfig;
 import org.example.entities.cliente.Cliente;
+import org.example.exceptions.cliente.ClienteAlreadyExistsException;
 import org.example.exceptions.cliente.ClienteDaoException;
 import org.example.exceptions.cliente.ClienteNotFoundException;
 
@@ -14,8 +15,10 @@ public class ClienteDaoImpl implements ClienteDao{
     private DatabaseConfig db;
 
     @Override
-    public Cliente create(Cliente cliente) throws ClienteDaoException {
-
+    public Cliente create(Cliente cliente) throws ClienteAlreadyExistsException {
+        if(existsClienteByCpf(cliente.getCpf())){
+            throw new ClienteAlreadyExistsException("Usuário já existe.");
+        }
         String sql = "INSERT INTO CLIENTE(nome, cpf, cep, estado, cidade, logradouro, numLogradouro, telefone) values(?,?,?,?,?,?,?,?)";
         try{
             Connection connection = db.getConnection();
@@ -65,7 +68,10 @@ public class ClienteDaoImpl implements ClienteDao{
     
 
     @Override
-    public Cliente update(Cliente cliente) throws ClienteDaoException{
+    public Cliente update(Cliente cliente) throws ClienteNotFoundException{
+        if(!existsClienteByCpf(cliente.getCpf())){
+            throw new ClienteNotFoundException("Usuário não existe..");
+        }
         String sql = "UPDATE CLIENTE SET nome = ?, cep = ?, estado = ?, cidade = ?, logradouro = ?, numLogradouro = ?, telefone = ? WHERE cpf = ?";
 
         try{
@@ -89,6 +95,9 @@ public class ClienteDaoImpl implements ClienteDao{
 
     @Override
     public void delete(String cpf) throws ClienteNotFoundException{
+        if(!existsClienteByCpf(cpf)){
+            throw new ClienteNotFoundException("Usuário já existe.");
+        }
         String sql = "DELETE FROM CLIENTE WHERE cpf = ?";
         try {
             Connection connection = db.getConnection();
@@ -119,12 +128,7 @@ public class ClienteDaoImpl implements ClienteDao{
         }
     }
 
-    /**
-     * Esse método é responsável por buscar um cliente pelo CPF e retorná-lo.
-     * @param cpf o CPF do cliente a ser buscado.
-     * @return O objeto do Cliente.
-     * @throws ClienteNotFoundException se o cliente não for encontrado.
-     */
+
     @Override
     public Cliente findByCpf(String cpf) throws ClienteNotFoundException {
         String sql = "SELECT * FROM CLIENTE WHERE cpf = ?";
